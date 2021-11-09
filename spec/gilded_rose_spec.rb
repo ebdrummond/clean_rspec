@@ -2,11 +2,40 @@ require "spec_helper"
 require "./lib/gilded_rose"
 
 RSpec.describe GildedRose do
-  let(:name) { 'Normal Item' }
   subject { described_class.new }
+  let(:name) { 'Normal Item' }
 
   it "is a gilded rose" do
     expect(subject).to be_a(GildedRose)
+  end
+
+  describe "#tick" do
+    context "with a normal item" do
+      subject { described_class.new(name: name, days_remaining: days_remaining, quality: quality) }
+      let(:name) { 'Normal Item' }
+
+      before { subject.tick }
+
+      context "after sell date" do
+        let(:days_remaining) { -10 }
+        let(:quality) { 10 }
+
+        it "does stuff I don't understand now" do
+          expect(subject.days_remaining).to eq(-11)
+          expect(subject.quality).to eq(8)
+        end
+      end
+
+      context "on sell date" do
+        let(:days_remaining) { 0 }
+        let(:quality) { 10 }
+
+        it "does some other stuff I don't understand now" do
+          expect(subject.days_remaining).to eq(-1)
+          expect(subject.quality).to eq(8)
+        end
+      end
+    end
   end
 
   it "normal item after sell date" do
